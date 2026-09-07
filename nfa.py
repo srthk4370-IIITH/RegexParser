@@ -10,6 +10,9 @@ class NFA:
             if s == '|':
                 if self.union() == -1:
                     return -1
+            elif s == ".":
+                if self.dot() == -1:
+                    return -1
             elif s == '*':
                 if self.star() == -1:
                     return -1
@@ -44,6 +47,17 @@ class NFA:
             x = x+1
         self.stack = [self.stack[0][0], self.stack[l-1][1]].copy()    
         return 0   
+
+    def dot(self):
+        if len(self.stack) >= 2:
+            a = self.stack.pop()
+            b = self.stack.pop()
+            b[1].addTransition("", a[0])
+            b[1].isAccepting(False)
+            a[1].isAccepting(True)
+            self.stack.append([b[0], a[1]])
+            return 0
+        return -1
 
     def char(self, s):
         n = node.createNode()

@@ -1,25 +1,34 @@
 import parser 
 import nfa
 import dfa
+import sys
 
 def main():
-    inp = input()
-    line = input().split()
-    parsed = (parser.parse(inp))
-    print("PARSED:", parsed)
+    debug = "--debug" in sys.argv
+    lines = sys.stdin.readlines()
+    if not lines:
+        print("Parse Error", file= sys.stderr)
+        return 1
+    inp = lines[0].rstrip("\n")
+    text = []
+    for line in lines[1:]:
+        text.extend(line.split())
+    parsed = parser.parse(inp)
+    if parsed == -1:
+        print("Parse Error", file= sys.stderr)
+        return 1
     n = nfa.NFA(parsed)
     ans = n.read()
-    if ans != -1:
-        nfa.print_nfa(n.stack[0], n.stack[1])
-        d = dfa.DFA(n)
-        head = d.createDFA()
+    if ans == -1:
+        print("Parse Error", file= sys.stderr)
+        return 1      
+    d = dfa.DFA(n)
+    head = d.createDFA()
+    if debug:
         dfa.print_dfa(head)
-        for words in line:
-            if d.readDFA(words, head, 0):
-                print(words)
-    else:
-        print("ERROR")
-
-main()
-
-#TODO: Add concatenation operator asw.... just add . between consecutive letters and add another elif in parser and nfa
+    for words in text:
+        if d.readDFA(words, head, 0):
+            print(words)
+     
+if __name__ == "__main__" :
+    main()

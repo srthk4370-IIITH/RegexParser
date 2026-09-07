@@ -71,17 +71,13 @@ class DFA:
 
 def print_dfa(start):
     state_id = {}
-
     queue = [start]
     count = 0
-
     while queue:
         curr = queue.pop(0)
-
         if curr not in state_id:
             state_id[curr] = count
             count += 1
-
         for destinations in curr.transitions.values():
             for dest in destinations:
                 if dest not in state_id:
