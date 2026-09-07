@@ -1,4 +1,5 @@
 import node, nfa
+import sys
 
 class DFA:
     def __init__(self, inp: nfa.NFA):
@@ -94,7 +95,7 @@ def print_dfa(start):
 
     alphabet = sorted(alphabet)
 
-    print("State", *alphabet, sep=", ")
+    print("State", *alphabet, sep=", ", file=sys.stderr)
 
     for curr, num in state_id.items():
         prefix = ""
@@ -114,4 +115,4 @@ def print_dfa(start):
             else:
                 row.append("-")
 
-        print(*row, sep=", ")
+        print(*row, sep=", ", file= sys.stderr)
