@@ -36,6 +36,8 @@ def parse(s: str):
                     x = x+1
                 ch += s[x+1]
                 x = x+1
+            if ch == "[]":
+                return -1
             ans.append(ch)
         elif ch == '+' or  ch == '?' or ch == '*':
             ans.append(ch)
@@ -46,6 +48,8 @@ def parse(s: str):
                 ans.append(ch)
             stack.append(ch)
         elif ch == ')':
+            if s[x-1] == '(':
+                return -1
             while stack and stack[-1] != '(':
                 ans.append(stack.pop())
             if not stack:
